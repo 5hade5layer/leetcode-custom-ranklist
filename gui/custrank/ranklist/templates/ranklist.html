@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Ranklist</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+
+<body>
+    <div class="row">
+        <div class="col">
+            <h2 style="font-size: 160%;margin: 0px 0px 1% 0px;">Ranklist</h2>
+        </div>
+    </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Number of Qs</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in ranklist.items %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{key}}</td>
+                    <td>{{value}}</td>
+                    <td>
+                        <form id="cancel_button" method="POST">
+                            {% csrf_token %}
+                            {{hidden_form}}
+                            <input type="hidden" name="hidden_field" value="{{ key }}">
+                            <button type="submit">Remove</button>
+                    <!-- <a href="javascript:$('#cancel_button').submit();" class="nav-link js-scroll-trigger"
+                                type="submit">Cancel</a> -->
+
+                     </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <br/>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{add}}
+        <input type="submit" name="analyse" value="ADD">
+    </form>
+    {% if invalid %}
+    <p>invalid username</p>
+    {%endif%}
+    {% if notexist %}
+    <p>username does not exist</p>
+    {%endif%}
+    {% if exist %}
+    <p>username already in the list</p>
+    {%endif%}
+</body>
