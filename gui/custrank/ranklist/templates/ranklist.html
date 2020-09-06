@@ -11,6 +11,28 @@
         body {
             font-family: Arial, sans-serif;
         }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #ccc;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background: #efefef;
+        }
+
+        tr:hover {
+            background: #d1d1d1;
+        }
     </style>
     <link rel="stylesheet" href="{% static 'style.css'%}">
 </head>
@@ -21,37 +43,37 @@
             <h2 style="font-size: 160%;margin: 0px 0px 1% 0px;">Ranklist</h2>
         </div>
     </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Username</th>
-                    <th>Number of Qs</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for key, value in ranklist.items %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{key}}</td>
-                    <td>{{value}}</td>
-                    <td>
-                        <form id="cancel_button" method="POST">
-                            {% csrf_token %}
-                            {{hidden_form}}
-                            <input type="hidden" name="hidden_field" value="{{ key }}">
-                            <button type="submit">Remove</button>
-                    <!-- <a href="javascript:$('#cancel_button').submit();" class="nav-link js-scroll-trigger"
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Username</th>
+                <th>Number of Qs</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, value in ranklist.items %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+                <td>
+                    <form id="cancel_button" method="POST">
+                        {% csrf_token %}
+                        {{hidden_form}}
+                        <input type="hidden" name="hidden_field" value="{{ key }}">
+                        <button type="submit">Remove</button>
+                        <!-- <a href="javascript:$('#cancel_button').submit();" class="nav-link js-scroll-trigger"
                                 type="submit">Cancel</a> -->
 
-                     </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    <br/>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br />
     <form action="" method="post">
         {% csrf_token %}
         {{add}}
