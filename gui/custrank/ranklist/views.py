@@ -18,7 +18,10 @@ def home(request):
         page = requests.get(URL)
         tree = html.fromstring(page.content)
         solved = tree.xpath('//span[@class="badge progress-bar-success"]/text()')
-        ranklist[i]=int(solved[1].strip().split(" ")[0])
+        if(len(solved)==7):
+            ranklist[i]=int(solved[1].strip().split(" ")[0])
+        else:
+            ranklist[i]=int(solved[3].strip().split(" ")[0])
     ranklist={k: v for k, v in sorted(ranklist.items(), key=lambda item: item[1],reverse=True)}
     if 'analyse' in request.POST: #get time and redirect to next page
         name = add(request.POST)
@@ -28,7 +31,8 @@ def home(request):
             page = requests.get(URL)
             tree = html.fromstring(page.content)
             solved = tree.xpath('//span[@class="badge progress-bar-success"]/text()')
-            if (len(username.strip().split(" "))<2 and username.strip()!='' and len(solved)==7 and (Person.objects.filter(name=username.strip()).exists())==False):
+            print(len(solved))
+            if (len(username.strip().split(" "))<2 and username.strip()!='' and (len(solved)==7 or len(solved)==9) and (Person.objects.filter(name=username.strip()).exists())==False):
                 new = Person.objects.create(name=username.strip())
                 new.save()
             elif(Person.objects.filter(name=username.strip()).exists()):
